@@ -6,6 +6,7 @@
 #include <unordered_set>
 #include <unordered_map>
 #include <list>
+#include <algorithm>
 
 class UnknownVertexException : public std::runtime_error {
 public:
@@ -112,12 +113,36 @@ graph[w].push_back(v); // v is now a neighbor of w
 template <typename T>
 void InterferenceGraph<T>::removeEdge(const T &v, const T &w) {
 
+auto * vPointer = std::find (graph[v].begin(), graph[v].end(), w); // check if value exists within each set
+
+auto * wPointer = std::find (graph[w].begin(), graph[w].end(), v);
+
+
 if ( graph.count(v) == 0 || graph.count(w) == 0) // Check if both vertices exist
 {
   throw UnknownVertexException( "One or both of the vertices do not exist in the graph");
 }
 
-else if ( graph[v] )
+
+// find why its not working
+/*
+else if ( vPointer == graph[v].end() || wPointer == graph[w].end() ) // if the pointers point to their respective end(), edge does not exist
+{
+  throw UnknownEdgeException("Edge does not exist");
+}
+*/
+
+
+// set what the pointers point to nothing
+
+*(vPointer) = " " ; 
+
+*(wPointer) = " ";
+
+
+vPointer = nullptr; // set pointers to null
+wPointer = nullptr;
+
 
 
 }
@@ -136,7 +161,37 @@ graph[vertex] = std::list<std::string>(); // Creates an mapping between vertex a
 }
 
 template <typename T>
-void InterferenceGraph<T>::removeVertex(const T &vertex) {}
+void InterferenceGraph<T>::removeVertex(const T &vertex) {
+// Must remove all edges associated with it first
+// then remove vertex
+
+
+if (graph.count(vertex) == 0 ) // if vertex does not exist
+{
+throw UnknownVertexException ( "Vertex does not exist");
+
+}
+
+std:: string temp;
+
+
+for ( int i = 0; i < graph[vertex].length(); i++ ) // is that valid syntax?
+{
+
+  
+
+
+// loop thorugh the set
+// at each position, go to that positions graph
+// erase this vertex from it
+// continue
+
+
+}
+
+
+
+}
 
 template <typename T>
 bool InterferenceGraph<T>::interferes(const T &v, const T &w) const {
