@@ -30,6 +30,9 @@ testing::AssertionResult verifyAllocation(const std::string &path_to_graph,
     const auto &row = CSVReader::readRow(line);
     for (const auto &v: row) {
       variables.insert(v);
+      if (degrees.find(v) == degrees.end()) {
+        degrees[v] = 0;
+      }
     }
     if (row.size() == 2) {
       degrees[row[0]]++;
