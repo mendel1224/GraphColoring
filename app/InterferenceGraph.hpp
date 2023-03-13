@@ -4,6 +4,8 @@
 #include <exception>
 #include <string>
 #include <unordered_set>
+#include <unordered_map>
+#include <list>
 
 class UnknownVertexException : public std::runtime_error {
 public:
@@ -57,9 +59,18 @@ public:
 
 private:
   // Private member variables here.
+std:: unordered_map < std::string, std::list < std::string > > graph; // graph data structure
+
+
 };
 
-template <typename T> InterferenceGraph<T>::InterferenceGraph() {}
+template <typename T> InterferenceGraph<T>::InterferenceGraph() {
+
+
+
+
+
+}
 
 template <typename T> InterferenceGraph<T>::~InterferenceGraph() {}
 
@@ -83,13 +94,46 @@ template <typename T> unsigned InterferenceGraph<T>::numEdges() const noexcept {
 }
 
 template <typename T>
-void InterferenceGraph<T>::addEdge(const T &v, const T &w) {}
+void InterferenceGraph<T>::addEdge(const T &v, const T &w) {
+
+if (graph.count(v) == 0 || graph.count(w) == 0) // Check if both vertices exist
+{
+throw UnknownVertexException( "One or both of the vertices do not exist in the graph");
+}
+
+
+graph[v].push_back(w); // w is now a neighbor of v
+
+graph[w].push_back(v); // v is now a neighbor of w
+
+
+}
 
 template <typename T>
-void InterferenceGraph<T>::removeEdge(const T &v, const T &w) {}
+void InterferenceGraph<T>::removeEdge(const T &v, const T &w) {
+
+if ( graph.count(v) == 0 || graph.count(w) == 0) // Check if both vertices exist
+{
+  throw UnknownVertexException( "One or both of the vertices do not exist in the graph");
+}
+
+else if ( graph[v] )
+
+
+}
 
 template <typename T>
-void InterferenceGraph<T>::addVertex(const T &vertex) noexcept {}
+void InterferenceGraph<T>::addVertex(const T &vertex) noexcept {
+
+if (graph.count(vertex)) // Check if vertex is already within the graph
+{
+  return; 
+}
+
+graph[vertex] = std::list<std::string>(); // Creates an mapping between vertex and an empty list
+
+
+}
 
 template <typename T>
 void InterferenceGraph<T>::removeVertex(const T &vertex) {}
