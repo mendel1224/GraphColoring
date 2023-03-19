@@ -246,7 +246,7 @@ throw UnknownVertexException ( "Vertex does not exist");
 
 std:: string temp;
 
-// is this correct syntax?
+
 for (auto setCounter = graph[vertex].begin(); setCounter != graph[vertex].end(); setCounter++) 
 
 {
