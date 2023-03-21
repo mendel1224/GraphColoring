@@ -42,7 +42,7 @@ TEST(PersonalTest, Interferes) { // Personal test for interferes
 
   
 
-  EXPECT_EQ(ig.interferes("x","y"), true );  
+  EXPECT_EQ(ig.interferes("x","z"), true );  
 
   
 
