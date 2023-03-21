@@ -5,6 +5,7 @@
 #include <unordered_set>
 #include <vector>
 #include <iostream>
+#include <set>
 
 using namespace proj6;
 
@@ -17,7 +18,8 @@ using namespace proj6;
 // graph you should return an empty map. You MUST use registers in the
 // range [1, num_registers] inclusive.
 
-int Partition(InterferenceGraph<Variable>& ig, std:: vector <std::string > &numbers, int lowIndex, int highIndex) {
+int Partition(InterferenceGraph<Variable>& ig, std:: vector <std::string > &numbers, int lowIndex, int highIndex) // Using Zybooks code for Quick Sort
+{
   // Pick middle element as pivot
   int midpoint = lowIndex + (highIndex - lowIndex) / 2;
   std:: string pivot = numbers[midpoint] ; 
@@ -77,9 +79,10 @@ RegisterAssignment proj6::assignRegisters(const std::string &path_to_graph,
 
   // Step 1: Sort according to degree
 
-  // 1) get a list of a set of all the vertices
-  // 2) Find the degree of each of the vertcies thorugh degree()
-  // 3) Sort in descending order in vector 
+  // 1) get a list  of all the vertices
+  // 2) copy to a vector
+  // 3) Find the degree of each of the vertcies thorugh degree()
+  // 4) Sort in descending order in vector 
 
 
   std:: unordered_set <std:: string > verticesSet; 
@@ -94,11 +97,92 @@ RegisterAssignment proj6::assignRegisters(const std::string &path_to_graph,
    Quicksort(ig, verticesVector, 0 , verticesVector.size()-1);
 
   
+  std::vector <int > registersList; // Create vector of registers
+
+  for ( int i = 1; i <= num_registers; i++)
+ {
+   registersList.push_back(i);
+
+ }
+
+     
+
+  while ( !verticesVector.empty())
+  {
+
+    // Assign highest value the first available register
+    // assign any vertex that is not a neighbor the same register
+    // repeat until vector is empty
+
+    
+      int registerNumber = registersList[0]; // retreieve first number in vector which is first available register
 
 
-  // pass unordered set into vector 
-  // access the degree by using ig.degree( string)
-  // sort based on that
+      
+      outputMap.insert( { verticesVector[0],registerNumber}); // set first vertex to first available register
+
+      std:: string temp = verticesVector[0]; // temp variable to hold the value of the first string so it can be removed from vector
+
+      
+
+       verticesVector.erase(verticesVector.begin()); // remove first value in vector
+
+       std:: unordered_set < std::string > vertexNeighbors; // set that will hold neighbors of each vertex given a register. These neighbors cannot be assigned the register
+
+       
+       std:: unordered_set <std::string > tempSet1; // temp set to hold returned neighbors
+
+        tempSet1 = ig.neighbors(temp); // neighbors of first element are returned to temp set
+
+        vertexNeighbors.insert(tempSet1.begin(), tempSet1.end()); // temp set now added to vertexNeighbors
+
+      for ( int i = 0; i < verticesVector.size(); i++)
+      
+      {
+
+         // Retreive all neighbors
+         // Check if any of the neighors have been colored yet 
+         // if yes, skip, 
+         // if no, map to register
+        
+        
+         if (vertexNeighbors.find(verticesVector[i]) != vertexNeighbors.end()) // check if element is neighbor to a vertex with same register
+         {
+        
+         
+
+          outputMap.insert( { verticesVector[i], registerNumber}); // Assign vertex to register 
+
+         //std:: unordered_set <std::string > tempSet2; // temp set to hold returned neighbors
+
+         tempSet1 = ig.neighbors(verticesVector[i]); // neighbors of first element are returned to temp set
+        
+         
+         vertexNeighbors.insert(tempSet1.begin(), tempSet1.end()); // temp set2 in now stored in the neighbor tracker
+
+         
+         verticesVector.erase(verticesVector.begin()); // remove first value in vector
+          
+
+         }
+      
+
+         // if ( !registersList.empty()) // stops seg fault
+         // {
+      }
+         registersList.erase(registersList.begin()); // Delete the first element in register set, next loop will now utilize next register 
+          
+     
+
+
+
+
+  }
+
+
+  for (const auto& kvp : outputMap) {
+    std::cout << "Key = " << kvp.first << ", Value = " << kvp.second << std::endl;
+  }
 
 
 
@@ -107,5 +191,5 @@ RegisterAssignment proj6::assignRegisters(const std::string &path_to_graph,
 
   
 
-  return {};
+  return outputMap;
 }
