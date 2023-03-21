@@ -94,14 +94,29 @@ RegisterAssignment proj6::assignRegisters(const std::string &path_to_graph,
 
    std::copy(verticesSet.begin(), verticesSet.end(), verticesVector.begin() ); // Copy set contents to vector
 
-   Quicksort(ig, verticesVector, 0 , verticesVector.size()-1);
+   Quicksort(ig, verticesVector, 0 , verticesVector.size()-1); // Vector is sorted in descending order according to degree
 
   
   std::vector <int > registersList; // Create vector of registers
 
+   // Testing if allocation is impossible and therefore, and empty map is to be returned
+
+      std:: string highestDegree = verticesVector[0];
+
+      int degreeValue = ig.degree(highestDegree); // Get degree of first element in the vector. This element has the highest degree
+
+      if ( degreeValue >= num_registers) // If there is less than d(g) +1 registers
+      {
+         return {};
+
+      }
+
+  
+  
   for ( int i = 1; i <= num_registers; i++)
  {
    registersList.push_back(i);
+   
 
  }
 
@@ -145,8 +160,11 @@ RegisterAssignment proj6::assignRegisters(const std::string &path_to_graph,
          // if yes, skip, 
          // if no, map to register
         
+        auto it = vertexNeighbors.find(verticesVector[i]);
         
-         if (vertexNeighbors.find(verticesVector[i]) != vertexNeighbors.end()) // check if element is neighbor to a vertex with same register
+
+         if ( it == vertexNeighbors.end())
+         //if (vertexNeighbors.find(verticesVector[i]) != vertexNeighbors.end()) // check if element is neighbor to a vertex with same register
          {
         
          
@@ -167,22 +185,25 @@ RegisterAssignment proj6::assignRegisters(const std::string &path_to_graph,
          }
       
 
-         // if ( !registersList.empty()) // stops seg fault
-         // {
+         
       }
+
+         if ( !registersList.empty()) // stops seg fault
+          {
+
          registersList.erase(registersList.begin()); // Delete the first element in register set, next loop will now utilize next register 
           
-     
+          }
 
 
 
 
   }
 
-
-  for (const auto& kvp : outputMap) {
-    std::cout << "Key = " << kvp.first << ", Value = " << kvp.second << std::endl;
-  }
+   // Testing to see if mapping is correct
+  //for (const auto& kvp : outputMap) { 
+  //  std::cout << "Key = " << kvp.first << ", Value = " << kvp.second << std::endl;
+ // }
 
 
 
