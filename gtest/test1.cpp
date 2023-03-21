@@ -29,7 +29,14 @@ TEST(RequiredPart1, Neighbors) {
   const std::unordered_set<Variable> &expected_neighbors = {"y", "z"};
 
   EXPECT_EQ(ig.neighbors("x"), expected_neighbors);
+
+
+
+
 }
+
+
+
 TEST(PersonalTest, Interferes) { // Personal test for interferes 
 
   const auto &GRAPH = "gtest/graphs/simple.csv"; 
@@ -48,7 +55,15 @@ TEST(PersonalTest, Interferes) { // Personal test for interferes
 
   } 
 
+TEST(RuntimeTest, Complete_1000) {
+const auto &GRAPH = "gtest/graphs/complete_1000.csv";
+InterferenceGraph<Variable> ig = CSVReader::load(GRAPH);
+}
+ 
   
+ 
+
+
 
 TEST(PersonalTest2, Degree) { // Personal test for degree 
 
