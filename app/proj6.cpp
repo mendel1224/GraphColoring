@@ -101,15 +101,7 @@ RegisterAssignment proj6::assignRegisters(const std::string &path_to_graph,
 
    // Testing if allocation is impossible and therefore, and empty map is to be returned
 
-      std:: string highestDegree = verticesVector[0]; // Retrieve the first element in vector
-
-      int degreeValue = ig.degree(highestDegree); // Get degree of first element in the vector. This element has the highest degree
-
-      if ( degreeValue >= num_registers) // Case with no solution
-         {
-            return {};
-
-         }
+     
 
  
   
@@ -124,6 +116,10 @@ RegisterAssignment proj6::assignRegisters(const std::string &path_to_graph,
 
   while ( !verticesVector.empty())
   {
+   if ( registersList.empty()) // stops seg fault
+          {
+            return {};
+          }
 
     // Assign highest value the first available register
     // assign any vertex that is not a neighbor the same register
@@ -188,18 +184,9 @@ RegisterAssignment proj6::assignRegisters(const std::string &path_to_graph,
          
       }
 
-         if ( !registersList.empty()) // stops seg fault
-          {
-
          registersList.erase(registersList.begin()); // Delete the first element in register set, next loop will now utilize next register 
          
-       
-
           
-          }
-
-
-
 
   }
 
