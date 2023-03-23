@@ -7,6 +7,7 @@
 #include <unordered_map>
 #include <list>
 #include <algorithm>
+#include <iostream>
 
 class UnknownVertexException : public std::runtime_error {
 public:
@@ -143,22 +144,6 @@ for ( auto iterator = graph.begin(); iterator != graph.end(); iterator++)
   totalEdges += listValues.size();
 
 
-  
-
-  /*for ( auto valueIterator = listValues.begin(); valueIterator != listValues.end(); valueIterator++ )
-  {
-    
-    totalEdges++; // increment totalEdges for each value within the list
-
-  } // slower implentation
-
-
-
-*/
-
-  
-
-
 
 }
   totalEdges = totalEdges/2;
@@ -185,35 +170,40 @@ graph[w].push_back(v); // v is now a neighbor of w
 template <typename T>
 void InterferenceGraph<T>::removeEdge(const T &v, const T &w) {
 
-auto * vPointer = std::find (graph[v].begin(), graph[v].end(), w); // check if value exists within each list
+auto  vPointer = std::find (graph[v].begin(), graph[v].end(), w); // check if value exists within each list
 
-auto * wPointer = std::find (graph[w].begin(), graph[w].end(), v);
+auto  wPointer = std::find (graph[w].begin(), graph[w].end(), v);
 
 
 if ( graph.count(v) == 0 || graph.count(w) == 0) // Check if both vertices exist
 {
+  
   throw UnknownVertexException( "One or both of the vertices do not exist in the graph");
+  
 }
 
 
-// is edge exception parameters correct?
 
-else if ( vPointer == graph[v].end() || wPointer == graph[w].end() ) // if the pointers point to their respective end(), edge does not exist
+
+else if ( vPointer == graph[v].end() || wPointer == graph[w].end() ) // if the pointer point to their respective end(), edge does not exist
 {
+  
   throw UnknownEdgeException(v,w);
 }
 
 
 
-// set what the pointers point to nothing
-
-*(vPointer) = " " ; 
-
-*(wPointer) = " ";
 
 
-vPointer = nullptr; // set pointers to null
-wPointer = nullptr;
+
+auto& list = graph[v]; // Remove w from v by accessing list mapped to v
+list.erase( std::remove( list.begin(), list.end(), w ), list.end() ); 
+
+
+auto& list2 = graph[w]; // Remove v from w by accessing list mapped to w
+list2.erase ( std::remove( list2.begin(), list2.end(), v), list2.end() ); // remove v from w
+
+
 
 
 
@@ -227,7 +217,7 @@ if (graph.count(vertex)) // Check if vertex is already within the graph
   return; 
 }
 
-graph[vertex] = std::list<std::string>(); // Creates an mapping between vertex and an empty list
+graph[vertex] = std::list<std::string>(); // Creates a mapping between vertex and an empty list
 
 
 }

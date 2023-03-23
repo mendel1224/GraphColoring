@@ -36,6 +36,45 @@ TEST(RequiredPart1, Neighbors) {
 }
 
 
+TEST(PersonalTestRemoveEdge, removeEdge) { 
+  const auto &GRAPH = "gtest/graphs/simple.csv";
+
+   InterferenceGraph<std::string> ig = CSVReader::load(GRAPH);
+   
+
+  ig.removeEdge("x", "y");
+  ig.removeEdge("x","z");
+
+  
+
+  EXPECT_EQ(ig.numEdges(), 1);
+
+
+
+
+}
+
+
+TEST(PersonalTestRemoveVertex, removeVertex) {
+  const auto &GRAPH = "gtest/graphs/simple.csv";
+
+   InterferenceGraph<std::string> ig = CSVReader::load(GRAPH);
+   
+
+  ig.removeVertex("x");
+  
+
+  
+
+  EXPECT_EQ(ig.numVertices(), 2);
+
+
+
+
+}
+
+
+
 
 TEST(PersonalTest, Interferes) { // Personal test for interferes 
 
@@ -45,8 +84,7 @@ TEST(PersonalTest, Interferes) { // Personal test for interferes
 
   const InterferenceGraph<Variable> &ig = CSVReader::load(GRAPH); 
 
-  //const std::unordered_set<Variable> &expected_neighbors = {"y", "z"}; 
-
+ 
   
 
   EXPECT_EQ(ig.interferes("x","z"), true );  
@@ -73,7 +111,7 @@ TEST(PersonalTest2, Degree) { // Personal test for degree
 
   const InterferenceGraph<Variable> &ig = CSVReader::load(GRAPH); 
 
-  //const std::unordered_set<Variable> &expected_neighbors = {"y", "z"}; 
+  
 
   
 
